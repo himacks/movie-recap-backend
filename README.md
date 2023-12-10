@@ -19,8 +19,9 @@ To install the project, follow these steps:
 
 Base URL: http://localhost:3000/api/v1/
 
-Endpoints
-Movies
+## Endpoints
+
+## Movies
 
 ### Search Movies
 
@@ -29,69 +30,80 @@ Query Parameters:
 name (optional): Search movies by name.
 id (optional): Get a movie by its ID.
 Returns a list of movies or a specific movie based on the query parameters.
-Search Movies by Genre and Score
+
+### Search Movies by Genre and Score
 
 GET /movies/genre
 Query Parameters:
 genre1, genre2, genre3 (optional): Search movies by up to three genres.
 limit (optional): Limit the number of results returned.
 Returns a list of movies filtered by specified genres and score limits.
-Get Movie Details
+
+### Get Movie Details
 
 GET /movies/details
 Query Parameters:
 id: The ID of the movie for which details are requested.
 Returns detailed information of a movie, including actors, directors, and reviews.
-Reviews
+
+## Reviews
 
 ### Add New Review
 
 POST /reviews/add
 Body: JSON object containing review details (film_id, user_id, score, etc.).
 Adds a new review to the database.
-Get Reviews
+
+### Get Reviews
 
 GET /reviews
 Query Parameters:
 film_id (optional): Fetch reviews for a specific film.
 user_id (optional): Fetch reviews by a specific user.
 Returns a list of reviews based on the query parameters.
-Users
+
+## Users
 
 ### User Signup
 
 POST /users/signup
 Body: JSON object containing user details (username, password, etc.).
 Registers a new user in the database.
-User Login
+
+### User Login
 
 POST /users/login
 Body: JSON object containing user credentials (username, password).
 Authenticates a user and returns user details.
-Watchlist
+
+## Watchlist
 
 ### Add Film to Watchlist
 
 POST /watchlist/add
 Body: JSON object containing user and film IDs (userId, filmId).
 Adds a film to the user's watchlist.
-Remove Film from Watchlist
+
+### Remove Film from Watchlist
 
 DELETE /watchlist/remove
 Body: JSON object containing user and film IDs (userId, filmId).
 Removes a film from the user's watchlist.
-Get User's Films to Watch
+
+### Get User's Films to Watch
 
 GET /watchlist
 Query Parameter:
 userId: The ID of the user.
 Returns a list of films in the user's watchlist.
-Get User's Watched Films
+
+### Get User's Watched Films
 
 GET /watchlist/watched
 Query Parameter:
 userId: The ID of the user.
-Returns a list of films that the user has watched.
+
+### Returns a list of films that the user has watched.
 
 ## Using Postman for Testing
 

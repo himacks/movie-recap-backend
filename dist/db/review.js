@@ -19,7 +19,7 @@ const addReview = (newReview) => {
         });
     });
 };
-const getReviewsByFilmId = (filmId) => {
+const getReviewsByMovieId = (filmId) => {
     return new Promise((resolve, reject) => {
         db_1.connection.getConnection((err, conn) => {
             if (err) {
@@ -36,4 +36,21 @@ const getReviewsByFilmId = (filmId) => {
         });
     });
 };
-exports.default = { addReview, getReviewsByFilmId };
+const getReviewsByUserId = (userId) => {
+    return new Promise((resolve, reject) => {
+        db_1.connection.getConnection((err, conn) => {
+            if (err) {
+                return reject(err);
+            }
+            const query = "SELECT * FROM reviews WHERE user_id = ?";
+            conn.query(query, [userId], (err, results) => {
+                conn.release();
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        });
+    });
+};
+exports.default = { addReview, getReviewsByMovieId, getReviewsByUserId };

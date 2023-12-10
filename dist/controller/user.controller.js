@@ -24,7 +24,7 @@ const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 });
@@ -47,7 +47,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 });

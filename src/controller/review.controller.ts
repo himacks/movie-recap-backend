@@ -14,30 +14,52 @@ const addNewReview = async (req: Request, res: Response) => {
     } catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 };
 
 const getReviews = async (req: Request, res: Response) => {
     try {
-        const filmId = parseInt(req.params.film_id);
-        if (isNaN(filmId)) {
-            return res.status(400).send({
-                message: "Invalid film_id"
+        const {film_id, user_id} = req.query;
+
+        if (film_id) {
+            const filmId = parseInt(film_id as string);
+            if (isNaN(filmId)) {
+                return res.status(400).send({
+                    message: "Invalid film_id"
+                });
+            }
+
+            const reviewsByFilm = await review.getReviewsByMovieId(filmId);
+            return res.status(200).send({
+                message: "Reviews by film fetched successfully",
+                result: reviewsByFilm
             });
         }
 
-        const reviews = await review.getReviewsByFilmId(filmId);
+        if (user_id) {
+            const userId = parseInt(user_id as string);
+            if (isNaN(userId)) {
+                return res.status(400).send({
+                    message: "Invalid user_id"
+                });
+            }
 
-        res.status(200).send({
-            message: "Reviews fetched successfully",
-            result: reviews
+            const reviewsByUser = await review.getReviewsByUserId(userId);
+            return res.status(200).send({
+                message: "Reviews by user fetched successfully",
+                result: reviewsByUser
+            });
+        }
+
+        return res.status(400).send({
+            message: "Please provide either film_id or user_id"
         });
     } catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 };

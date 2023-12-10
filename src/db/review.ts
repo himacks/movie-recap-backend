@@ -26,7 +26,7 @@ const addReview = (newReview: Partial<Omit<Review, "id">>): Promise<void> => {
     });
 };
 
-const getReviewsByFilmId = (filmId: number): Promise<Review[]> => {
+const getReviewsByMovieId = (filmId: number): Promise<Review[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
             if (err) {
@@ -45,4 +45,23 @@ const getReviewsByFilmId = (filmId: number): Promise<Review[]> => {
     });
 };
 
-export default {addReview, getReviewsByFilmId};
+const getReviewsByUserId = (userId: number): Promise<Review[]> => {
+    return new Promise((resolve, reject) => {
+        connection.getConnection((err: QueryError, conn: PoolConnection) => {
+            if (err) {
+                return reject(err);
+            }
+
+            const query = "SELECT * FROM reviews WHERE user_id = ?";
+            conn.query(query, [userId], (err, results) => {
+                conn.release();
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results as Review[]);
+            });
+        });
+    });
+};
+
+export default {addReview, getReviewsByMovieId, getReviewsByUserId};

@@ -21,28 +21,47 @@ const addNewReview = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 });
 const getReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const filmId = parseInt(req.params.film_id);
-        if (isNaN(filmId)) {
-            return res.status(400).send({
-                message: "Invalid film_id"
+        const { film_id, user_id } = req.query;
+        if (film_id) {
+            const filmId = parseInt(film_id);
+            if (isNaN(filmId)) {
+                return res.status(400).send({
+                    message: "Invalid film_id"
+                });
+            }
+            const reviewsByFilm = yield review_1.default.getReviewsByMovieId(filmId);
+            return res.status(200).send({
+                message: "Reviews by film fetched successfully",
+                result: reviewsByFilm
             });
         }
-        const reviews = yield review_1.default.getReviewsByFilmId(filmId);
-        res.status(200).send({
-            message: "Reviews fetched successfully",
-            result: reviews
+        if (user_id) {
+            const userId = parseInt(user_id);
+            if (isNaN(userId)) {
+                return res.status(400).send({
+                    message: "Invalid user_id"
+                });
+            }
+            const reviewsByUser = yield review_1.default.getReviewsByUserId(userId);
+            return res.status(200).send({
+                message: "Reviews by user fetched successfully",
+                result: reviewsByUser
+            });
+        }
+        return res.status(400).send({
+            message: "Please provide either film_id or user_id"
         });
     }
     catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 });

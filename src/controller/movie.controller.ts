@@ -1,4 +1,5 @@
 import movie from "../db/movie";
+import review from "../db/review";
 import reviewBase from "../db/reviewBase";
 import {Request, Response} from "express";
 
@@ -29,7 +30,7 @@ const searchMovies = async (req: Request, res: Response) => {
 
         return res.status(404).send({message: "Movie not found"});
     } catch (err) {
-        res.status(500).send({message: "DATABASE ERROR", error: err.code});
+        res.status(500).send({message: "DATABASE ERROR", error: err});
     }
 };
 
@@ -52,8 +53,43 @@ const searchMoviesByGenreScore = async (req: Request, res: Response) => {
 
         res.status(200).send({message: "Movies fetched successfully", result: movies});
     } catch (err) {
-        res.status(500).send({message: "DATABASE ERROR", error: err.code});
+        res.status(500).send({message: "DATABASE ERROR", error: err});
     }
 };
 
-export default {searchMovies, searchMoviesByGenreScore};
+const getMovieDetails = async (req: Request, res: Response) => {
+    const {id} = req.query;
+
+    try {
+        const movieId = parseInt(id as string);
+        if (isNaN(movieId)) {
+            return res.status(400).send({message: "Invalid movie ID"});
+        }
+
+        // Fetching movie details
+        const movieDetails = await movie.getMovieById(movieId);
+        if (!movieDetails) {
+            return res.status(404).send({message: "Movie not found"});
+        }
+
+        const [actors, directors, reviews] = await Promise.all([
+            movie.getActorsByMovieId(movieId),
+            movie.getDirectorsByMovieId(movieId),
+            review.getReviewsByMovieId(movieId)
+        ]);
+
+        res.status(200).send({
+            message: "Movie details fetched successfully",
+            result: {
+                movie: movieDetails,
+                actors: actors,
+                directors: directors,
+                reviews: reviews
+            }
+        });
+    } catch (err) {
+        res.status(500).send({message: "DATABASE ERROR", error: err});
+    }
+};
+
+export default {searchMovies, searchMoviesByGenreScore, getMovieDetails};

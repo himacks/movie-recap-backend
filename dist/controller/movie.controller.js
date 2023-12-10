@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const movie_1 = require("../db/movie");
+const review_1 = require("../db/review");
 const reviewBase_1 = require("../db/reviewBase");
 const searchMovies = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -37,7 +38,7 @@ const searchMovies = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         return res.status(404).send({ message: "Movie not found" });
     }
     catch (err) {
-        res.status(500).send({ message: "DATABASE ERROR", error: err.code });
+        res.status(500).send({ message: "DATABASE ERROR", error: err });
     }
 });
 const searchMoviesByGenreScore = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,7 +51,38 @@ const searchMoviesByGenreScore = (req, res) => __awaiter(void 0, void 0, void 0,
         res.status(200).send({ message: "Movies fetched successfully", result: movies });
     }
     catch (err) {
-        res.status(500).send({ message: "DATABASE ERROR", error: err.code });
+        res.status(500).send({ message: "DATABASE ERROR", error: err });
     }
 });
-exports.default = { searchMovies, searchMoviesByGenreScore };
+const getMovieDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.query;
+    try {
+        const movieId = parseInt(id);
+        if (isNaN(movieId)) {
+            return res.status(400).send({ message: "Invalid movie ID" });
+        }
+        // Fetching movie details
+        const movieDetails = yield movie_1.default.getMovieById(movieId);
+        if (!movieDetails) {
+            return res.status(404).send({ message: "Movie not found" });
+        }
+        const [actors, directors, reviews] = yield Promise.all([
+            movie_1.default.getActorsByMovieId(movieId),
+            movie_1.default.getDirectorsByMovieId(movieId),
+            review_1.default.getReviewsByMovieId(movieId)
+        ]);
+        res.status(200).send({
+            message: "Movie details fetched successfully",
+            result: {
+                movie: movieDetails,
+                actors: actors,
+                directors: directors,
+                reviews: reviews
+            }
+        });
+    }
+    catch (err) {
+        res.status(500).send({ message: "DATABASE ERROR", error: err });
+    }
+});
+exports.default = { searchMovies, searchMoviesByGenreScore, getMovieDetails };

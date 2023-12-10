@@ -45,4 +45,6 @@ const findUserByUsernameAndPassword = (
     });
 };
 
+//add user stats, like watch list count, watched list count, average review rating, favorite genres
+
 export default {addUser, findUserByUsernameAndPassword};

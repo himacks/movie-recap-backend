@@ -53,4 +53,50 @@ const getMoviesByFilmIds = (filmIds: number[]): Promise<Movie[]> => {
     });
 };
 
-export default {getMovieById, getMoviesByName, getMoviesByFilmIds};
+const getActorsByMovieId = (movieId: number): Promise<any[]> => {
+    return new Promise((resolve, reject) => {
+        connection.getConnection((err, conn) => {
+            if (err) return reject(err);
+
+            const query = `
+                SELECT a.id, a.actor_name, a.profile_path 
+                FROM actors a
+                JOIN actor_to_film atf ON a.id = atf.actor_id
+                WHERE atf.film_id = ?`;
+
+            conn.query(query, [movieId], (err, results) => {
+                conn.release();
+                if (err) return reject(err);
+                return resolve(results as any[]);
+            });
+        });
+    });
+};
+
+const getDirectorsByMovieId = (movieId: number): Promise<any[]> => {
+    return new Promise((resolve, reject) => {
+        connection.getConnection((err, conn) => {
+            if (err) return reject(err);
+
+            const query = `
+                SELECT d.id, d.director_name, d.profile_path 
+                FROM directors d
+                JOIN director_to_film dtf ON d.id = dtf.director_id
+                WHERE dtf.film_id = ?`;
+
+            conn.query(query, [movieId], (err, results) => {
+                conn.release();
+                if (err) return reject(err);
+                return resolve(results as any[]);
+            });
+        });
+    });
+};
+
+export default {
+    getMovieById,
+    getMoviesByName,
+    getMoviesByFilmIds,
+    getActorsByMovieId,
+    getDirectorsByMovieId
+};

@@ -22,7 +22,7 @@ const addNewUser = async (req: Request, res: Response) => {
     } catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 };
@@ -45,7 +45,7 @@ const loginUser = async (req: Request, res: Response) => {
     } catch (err) {
         res.status(500).send({
             message: "DATABASE ERROR",
-            error: err.code
+            error: err
         });
     }
 };

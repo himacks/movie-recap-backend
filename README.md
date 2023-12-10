@@ -102,8 +102,7 @@ Returns a list of films in the user's watchlist.
 GET /watchlist/watched
 Query Parameter:
 userId: The ID of the user.
-
-### Returns a list of films that the user has watched.
+Returns a list of films that the user has watched.
 
 ## Using Postman for Testing
 

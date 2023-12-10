@@ -18,6 +18,26 @@ const addNewReview = async (req: Request, res: Response) => {
         });
     }
 };
+const deleteReview = async (req: Request, res: Response) => {
+    try {
+        const reviewId = parseInt(req.query.id as string);
+        if (isNaN(reviewId)) {
+            return res.status(400).send({
+                message: "Invalid review ID"
+            });
+        }
+
+        await review.deleteReviewById(reviewId);
+        res.status(200).send({
+            message: "Review deleted successfully"
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: "DATABASE ERROR",
+            error: err
+        });
+    }
+};
 
 const getReviews = async (req: Request, res: Response) => {
     try {
@@ -64,4 +84,4 @@ const getReviews = async (req: Request, res: Response) => {
     }
 };
 
-export default {addNewReview, getReviews};
+export default {addNewReview, getReviews, deleteReview};

@@ -1,6 +1,8 @@
 import {PoolConnection, QueryError} from "mysql2";
 import {Movie} from "../models/movie";
 import {connection} from "../config/db";
+import {Actor} from "../models/actor";
+import {Director} from "../models/director";
 
 const getMovieById = (movieId: number): Promise<Movie | null> => {
     return new Promise((resolve, reject) => {
@@ -53,13 +55,13 @@ const getMoviesByFilmIds = (filmIds: number[]): Promise<Movie[]> => {
     });
 };
 
-const getActorsByMovieId = (movieId: number): Promise<any[]> => {
+const getActorsByMovieId = (movieId: number): Promise<Actor[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err, conn) => {
             if (err) return reject(err);
 
             const query = `
-                SELECT a.id, a.actor_name, a.profile_path 
+                SELECT a.id, a.actor_name, a.profile_path, atf.character_name
                 FROM actors a
                 JOIN actor_to_film atf ON a.id = atf.actor_id
                 WHERE atf.film_id = ?`;
@@ -67,13 +69,13 @@ const getActorsByMovieId = (movieId: number): Promise<any[]> => {
             conn.query(query, [movieId], (err, results) => {
                 conn.release();
                 if (err) return reject(err);
-                return resolve(results as any[]);
+                return resolve(results as Actor[]);
             });
         });
     });
 };
 
-const getDirectorsByMovieId = (movieId: number): Promise<any[]> => {
+const getDirectorsByMovieId = (movieId: number): Promise<Director[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err, conn) => {
             if (err) return reject(err);
@@ -87,7 +89,7 @@ const getDirectorsByMovieId = (movieId: number): Promise<any[]> => {
             conn.query(query, [movieId], (err, results) => {
                 conn.release();
                 if (err) return reject(err);
-                return resolve(results as any[]);
+                return resolve(results as Director[]);
             });
         });
     });

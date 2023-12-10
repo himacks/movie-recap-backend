@@ -50,4 +50,46 @@ const loginUser = async (req: Request, res: Response) => {
     }
 };
 
-export default {addNewUser, loginUser};
+const updateUser = async (req: Request, res: Response) => {
+    try {
+        const userId = parseInt(req.body.id as string);
+        if (isNaN(userId)) {
+            return res.status(400).send({
+                message: "Invalid userId"
+            });
+        }
+
+        const updateData: Partial<User> = req.body;
+
+        await user.updateUser(userId, updateData);
+
+        res.status(200).send({
+            message: "User updated successfully"
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: "DATABASE ERROR",
+            error: err
+        });
+    }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+    try {
+        const {id, username, password} = req.body;
+
+        const userId = parseInt(id as string);
+        if (isNaN(userId)) {
+            return res.status(400).send({
+                message: "Invalid userId"
+            });
+        }
+
+        await user.deleteUser(userId, username, password);
+        res.status(200).send({message: "User account deleted successfully"});
+    } catch (err) {
+        res.status(500).send({message: "DATABASE ERROR", error: err});
+    }
+};
+
+export default {addNewUser, loginUser, updateUser, deleteUser};

@@ -25,6 +25,34 @@ const addUser = (newUser: Omit<User, "id">): Promise<void> => {
     });
 };
 
+const updateUser = (userId: number, updateData: Partial<User>): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        connection.getConnection((err: QueryError, conn: PoolConnection) => {
+            if (err) {
+                return reject(err);
+            }
+
+            let query = "UPDATE users SET ";
+            const queryParams = [];
+            Object.keys(updateData).forEach((key, index) => {
+                query += `${key} = ?`;
+                query += index === Object.keys(updateData).length - 1 ? " " : ", ";
+                queryParams.push(updateData[key]);
+            });
+            query += "WHERE id = ?";
+            queryParams.push(userId);
+
+            conn.query(query, queryParams, (err, result) => {
+                conn.release();
+                if (err) {
+                    return reject(err);
+                }
+                return resolve();
+            });
+        });
+    });
+};
+
 const findUserByUsernameAndPassword = (
     username: string,
     password: string
@@ -45,6 +73,28 @@ const findUserByUsernameAndPassword = (
     });
 };
 
+const deleteUser = (userId: number, username: string, password: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            "CALL deleteUserAccount(?, ?, ?, @status)",
+            [userId, username, password],
+            (err, results) => {
+                connection.query("SELECT @status", (err, results) => {
+                    const status = results[0]["@status"];
+
+                    if (status == 1) {
+                        return resolve();
+                    } else if (status == 0) {
+                        return reject(new Error("Error No Username/Password Combo Found"));
+                    } else if (status == -1) {
+                        return reject(new Error("DATABASE ERROR"));
+                    }
+                });
+            }
+        );
+    });
+};
+
 //add user stats, like watch list count, watched list count, average review rating, favorite genres
 
-export default {addUser, findUserByUsernameAndPassword};
+export default {addUser, findUserByUsernameAndPassword, updateUser, deleteUser};

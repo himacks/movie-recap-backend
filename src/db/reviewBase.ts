@@ -1,5 +1,6 @@
 import {PoolConnection, QueryError} from "mysql2";
 import {connection} from "../config/db";
+import {FilmScore} from "../models/filmScore";
 
 const getFilmScoresByGenres = (
     genre1: string,
@@ -38,7 +39,7 @@ const getFilmScoresByGenres = (
                     conn.query(dropTempTable, (err) => {
                         conn.release();
                         if (err) return reject(err);
-                        return resolve(results as any[]);
+                        return resolve(results as FilmScore[]);
                     });
                 });
             });

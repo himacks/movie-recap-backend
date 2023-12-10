@@ -2,6 +2,7 @@ import movie from "../db/movie";
 import review from "../db/review";
 import reviewBase from "../db/reviewBase";
 import {Request, Response} from "express";
+import {FilmScore} from "../models/filmScore";
 
 const searchMovies = async (req: Request, res: Response) => {
     try {
@@ -40,14 +41,14 @@ const searchMoviesByGenreScore = async (req: Request, res: Response) => {
 
         const limitNumber = limit ? parseInt(limit as string) : 10;
 
-        const filmScores = await reviewBase.getFilmScoresByGenres(
+        const filmScores: FilmScore[] = await reviewBase.getFilmScoresByGenres(
             (genre1 as string) || null,
             (genre2 as string) || null,
             (genre3 as string) || null,
             limitNumber
         );
 
-        const filmIds = filmScores.map((filmScore: any) => filmScore.film_id);
+        const filmIds = filmScores.map((filmScore: FilmScore) => filmScore.film_id);
 
         const movies = await movie.getMoviesByFilmIds(filmIds);
 

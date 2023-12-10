@@ -26,6 +26,25 @@ const addReview = (newReview: Partial<Omit<Review, "id">>): Promise<void> => {
     });
 };
 
+const deleteReviewById = (reviewId: number): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        connection.getConnection((err: QueryError, conn: PoolConnection) => {
+            if (err) {
+                return reject(err);
+            }
+
+            const query = "DELETE FROM reviews WHERE id = ?";
+            conn.query(query, [reviewId], (err, result) => {
+                conn.release();
+                if (err) {
+                    return reject(err);
+                }
+                return resolve();
+            });
+        });
+    });
+};
+
 const getReviewsByMovieId = (filmId: number): Promise<Review[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -64,4 +83,4 @@ const getReviewsByUserId = (userId: number): Promise<Review[]> => {
     });
 };
 
-export default {addReview, getReviewsByMovieId, getReviewsByUserId};
+export default {addReview, getReviewsByMovieId, getReviewsByUserId, deleteReviewById};

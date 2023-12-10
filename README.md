@@ -67,12 +67,14 @@ Returns a list of reviews based on the query parameters.
 ### User Signup
 
 POST /users/signup
+
 Body: JSON object containing user details (username, password, etc.).
 Registers a new user in the database.
 
 ### User Login
 
 POST /users/login
+
 Body: JSON object containing user credentials (username, password).
 Authenticates a user and returns user details.
 
@@ -81,18 +83,21 @@ Authenticates a user and returns user details.
 ### Add Film to Watchlist
 
 POST /watchlist/add
+
 Body: JSON object containing user and film IDs (userId, filmId).
 Adds a film to the user's watchlist.
 
 ### Remove Film from Watchlist
 
 DELETE /watchlist/remove
+
 Body: JSON object containing user and film IDs (userId, filmId).
 Removes a film from the user's watchlist.
 
 ### Get User's Films to Watch
 
 GET /watchlist
+
 Query Parameter:
 userId: The ID of the user.
 Returns a list of films in the user's watchlist.

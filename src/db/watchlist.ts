@@ -1,5 +1,6 @@
 import {PoolConnection, QueryError} from "mysql2";
 import {connection} from "../config/db";
+import {Movie} from "../models/movie";
 
 const addUserFilmToWatch = (userId: number, filmId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -45,7 +46,7 @@ const getUserFilmsToWatch = (userId: number): Promise<any[]> => {
             conn.query(query, [userId], (err, results) => {
                 conn.release();
                 if (err) return reject(err);
-                resolve(results as any[]);
+                resolve(results as Movie[]);
             });
         });
     });
@@ -65,7 +66,7 @@ const getUserWatchedFilms = (userId: number): Promise<any[]> => {
             conn.query(query, [userId], (err, results) => {
                 conn.release();
                 if (err) return reject(err);
-                resolve(results as any[]);
+                resolve(results as Movie[]);
             });
         });
     });

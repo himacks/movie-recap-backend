@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 export default function validateReview(req: Request, res: Response, next: NextFunction) {
-    const review = req.body as any;
+    const review = req.body;
 
     review.film_id = parseInt(review.film_id);
     review.user_id = parseInt(review.user_id);

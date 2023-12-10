@@ -22,7 +22,7 @@ Base URL: http://localhost:3000/api/v1/
 Endpoints
 Movies
 
-# Search Movies
+### Search Movies
 
 GET /movies/search
 Query Parameters:
@@ -44,7 +44,7 @@ id: The ID of the movie for which details are requested.
 Returns detailed information of a movie, including actors, directors, and reviews.
 Reviews
 
-# Add New Review
+### Add New Review
 
 POST /reviews/add
 Body: JSON object containing review details (film_id, user_id, score, etc.).
@@ -58,7 +58,7 @@ user_id (optional): Fetch reviews by a specific user.
 Returns a list of reviews based on the query parameters.
 Users
 
-# User Signup
+### User Signup
 
 POST /users/signup
 Body: JSON object containing user details (username, password, etc.).
@@ -70,7 +70,7 @@ Body: JSON object containing user credentials (username, password).
 Authenticates a user and returns user details.
 Watchlist
 
-# Add Film to Watchlist
+### Add Film to Watchlist
 
 POST /watchlist/add
 Body: JSON object containing user and film IDs (userId, filmId).

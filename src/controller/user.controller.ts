@@ -92,4 +92,18 @@ const deleteUser = async (req: Request, res: Response) => {
     }
 };
 
-export default {addNewUser, loginUser, updateUser, deleteUser};
+const getUserStatistics = async (req: Request, res: Response) => {
+    try {
+        const userId = parseInt(req.query.id as string);
+        if (isNaN(userId)) {
+            return res.status(400).send({message: "Invalid userId"});
+        }
+
+        const stats = await user.getUserStats(userId);
+        res.status(200).send({message: "User statistics fetched successfully", stats});
+    } catch (err) {
+        res.status(500).send({message: "DATABASE ERROR", error: err});
+    }
+};
+
+export default {addNewUser, loginUser, updateUser, deleteUser, getUserStatistics};

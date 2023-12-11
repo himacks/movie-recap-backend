@@ -73,6 +73,36 @@ const findUserByUsernameAndPassword = (
     });
 };
 
+const getUserStats = (userId: number): Promise<{watchedCount: number; watchlistCount: number}> => {
+    return new Promise((resolve, reject) => {
+        connection.getConnection((err: QueryError, conn: PoolConnection) => {
+            if (err) return reject(err);
+
+            const watchedQuery =
+                "SELECT COUNT(DISTINCT film_id) AS watchedCount FROM reviews WHERE user_id = ?";
+            conn.query(watchedQuery, [userId], (err, watchedResults) => {
+                if (err) {
+                    conn.release();
+                    return reject(err);
+                }
+
+                const watchlistQuery =
+                    "SELECT COUNT(*) AS watchlistCount FROM watchlist WHERE user_id = ?";
+                conn.query(watchlistQuery, [userId], (err, watchlistResults) => {
+                    conn.release();
+                    if (err) return reject(err);
+
+                    const stats = {
+                        watchedCount: watchedResults[0].watchedCount,
+                        watchlistCount: watchlistResults[0].watchlistCount
+                    };
+                    return resolve(stats);
+                });
+            });
+        });
+    });
+};
+
 const deleteUser = (userId: number, username: string, password: string): Promise<void> => {
     return new Promise((resolve, reject) => {
         connection.query(
@@ -97,4 +127,4 @@ const deleteUser = (userId: number, username: string, password: string): Promise
 
 //add user stats, like watch list count, watched list count, average review rating, favorite genres
 
-export default {addUser, findUserByUsernameAndPassword, updateUser, deleteUser};
+export default {addUser, findUserByUsernameAndPassword, updateUser, deleteUser, getUserStats};

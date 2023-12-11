@@ -7,6 +7,7 @@ userRouter.post("/signup", validateUser, userController.addNewUser);
 userRouter.post("/login", validateUser, userController.loginUser);
 userRouter.patch("/update", validateUser, userController.updateUser);
 userRouter.delete("/delete", validateUser, userController.deleteUser);
+userRouter.get("/stats", userController.getUserStatistics);
 
 // export the router
 export default userRouter;

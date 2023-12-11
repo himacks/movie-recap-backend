@@ -12,36 +12,24 @@ const getFilmScoresByGenres = (
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
             if (err) return reject(err);
 
-            const createTempTable = `
-                CREATE TEMPORARY TABLE IF NOT EXISTS TempMovieScores AS
-                SELECT 
-                    film_id,
-                    (vote_count * ((IFNULL(${genre1}, 0) * 3) + (IFNULL(${genre2}, 0) * 2) + IFNULL(${genre3}, 0))) AS score
-                FROM reviews_base
-                ORDER BY score DESC
-                LIMIT ?;
+            // sub query within a query
+            const query = `
+                SELECT * FROM (
+                    SELECT 
+                        film_id,
+                        (vote_count * ((IFNULL(${genre1}, 0) * 3) + (IFNULL(${genre2}, 0) * 2) + IFNULL(${genre3}, 0))) AS score
+                    FROM reviews_base
+                    ORDER BY score DESC
+                    LIMIT ?
+                ) AS derivedTable;
             `;
 
-            conn.query(createTempTable, [limit], (err) => {
+            conn.query(query, [limit], (err, results) => {
+                conn.release();
                 if (err) {
-                    conn.release();
                     return reject(err);
                 }
-
-                const selectFromTemp = `SELECT * FROM TempMovieScores;`;
-                conn.query(selectFromTemp, (err, results) => {
-                    if (err) {
-                        conn.release();
-                        return reject(err);
-                    }
-
-                    const dropTempTable = `DROP TEMPORARY TABLE IF EXISTS TempMovieScores;`;
-                    conn.query(dropTempTable, (err) => {
-                        conn.release();
-                        if (err) return reject(err);
-                        return resolve(results as FilmScore[]);
-                    });
-                });
+                return resolve(results as FilmScore[]);
             });
         });
     });

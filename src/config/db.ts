@@ -5,5 +5,6 @@ export const connection = createPool({
     port: 3306,
     user: "root",
     password: "chickennugget",
-    database: "MovieRecap"
+    database: "MovieRecap",
+    multipleStatements: true
 });

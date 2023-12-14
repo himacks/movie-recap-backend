@@ -1,6 +1,9 @@
+import {Movie} from "./movie";
+
 export interface Review {
     id: number;
     film_id: number;
+    film?: Movie;
     user_id: number;
     comments: string;
     Action?: number;

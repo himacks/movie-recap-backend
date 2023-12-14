@@ -21,7 +21,7 @@ const getFilmScoresByGenres = (
                     FROM reviews_base
                     ORDER BY score DESC
                     LIMIT ?
-                ) AS derivedTable;
+                ) AS moviesByGenreTable;
             `;
 
             conn.query(query, [limit], (err, results) => {

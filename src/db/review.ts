@@ -1,6 +1,7 @@
 import {PoolConnection, QueryError} from "mysql2";
 import {Review} from "../models/review";
 import {connection} from "../config/db";
+import {Movie} from "../models/movie";
 
 const addReview = (newReview: Partial<Omit<Review, "id">>): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -71,13 +72,47 @@ const getReviewsByUserId = (userId: number): Promise<Review[]> => {
                 return reject(err);
             }
 
-            const query = "SELECT * FROM reviews WHERE user_id = ?";
+            const query =
+                "SELECT * FROM reviews JOIN movies ON reviews.film_id = movies.id WHERE user_id = ?";
             conn.query(query, [userId], (err, results) => {
                 conn.release();
                 if (err) {
                     return reject(err);
                 }
-                return resolve(results as Review[]);
+
+                // Map over the results and restructure each item
+                const reviewsWithMovies = (results as (Movie & Review)[]).map((result) => {
+                    // Separate movie fields from review fields
+                    const {
+                        original_language,
+                        overview,
+                        poster_path,
+                        release_date,
+                        revenue,
+                        tagline,
+                        title,
+                        ...reviewFields
+                    } = result;
+
+                    // Create a movie object with the movie fields
+                    const movie = {
+                        original_language,
+                        overview,
+                        poster_path,
+                        release_date,
+                        revenue,
+                        tagline,
+                        title
+                    };
+
+                    // Return the new structure
+                    return {
+                        ...reviewFields,
+                        movie
+                    };
+                });
+
+                return resolve(reviewsWithMovies as Review[]);
             });
         });
     });

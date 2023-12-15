@@ -14,8 +14,6 @@ const addReview = (newReview: Partial<Omit<Review, "id">>): Promise<void> => {
                 ", "
             )}) VALUES (${"?, ".repeat(Object.keys(newReview).length).slice(0, -2)})`;
 
-            console.log(query);
-
             conn.query(query, Object.values(newReview), (err, result) => {
                 conn.release();
                 if (err) {

@@ -93,4 +93,13 @@ const getMovieDetails = async (req: Request, res: Response) => {
     }
 };
 
-export default {searchMovies, searchMoviesByGenreScore, getMovieDetails};
+const getTrendingMovies = async (req: Request, res: Response) => {
+    try {
+        const trendingMovies = await movie.getTrendingMovies();
+        res.status(200).send({message: "Trending Movies fetched successfully", trendingMovies});
+    } catch (err) {
+        res.status(500).send({message: "DATABASE ERROR", error: err});
+    }
+};
+
+export default {searchMovies, searchMoviesByGenreScore, getMovieDetails, getTrendingMovies};

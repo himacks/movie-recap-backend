@@ -32,7 +32,7 @@ const removeUserFilmToWatch = (userId: number, filmId: number): Promise<void> =>
     });
 };
 
-const getUserFilmsToWatch = (userId: number): Promise<any[]> => {
+const getUserFilmsToWatch = (userId: number): Promise<Movie[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
             if (err) return reject(err);
@@ -52,7 +52,7 @@ const getUserFilmsToWatch = (userId: number): Promise<any[]> => {
     });
 };
 
-const getUserWatchedFilms = (userId: number): Promise<any[]> => {
+const getUserWatchedFilms = (userId: number): Promise<Movie[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
             if (err) return reject(err);

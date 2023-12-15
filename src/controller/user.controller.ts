@@ -99,7 +99,7 @@ const getUserStatistics = async (req: Request, res: Response) => {
             return res.status(400).send({message: "Invalid userId"});
         }
 
-        const stats = await user.getUserStats(userId);
+        const stats = await user.getUserOverallStats(userId);
         res.status(200).send({message: "User statistics fetched successfully", stats});
     } catch (err) {
         res.status(500).send({message: "DATABASE ERROR", error: err});

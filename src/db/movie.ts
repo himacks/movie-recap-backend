@@ -95,10 +95,26 @@ const getDirectorsByMovieId = (movieId: number): Promise<Director[]> => {
     });
 };
 
+const getTrendingMovies = (): Promise<Movie[]> => {
+    return new Promise((resolve, reject) => {
+        connection.getConnection((err: QueryError, conn: PoolConnection) => {
+            if (err) return reject(err);
+
+            const query = "SELECT * FROM trending_10_app_movies";
+            conn.query(query, (err, results) => {
+                conn.release();
+                if (err) return reject(err);
+                return resolve(results as Movie[]);
+            });
+        });
+    });
+};
+
 export default {
     getMovieById,
     getMoviesByName,
     getMoviesByFilmIds,
     getActorsByMovieId,
-    getDirectorsByMovieId
+    getDirectorsByMovieId,
+    getTrendingMovies
 };

@@ -6,6 +6,7 @@ const movieRouter = Router();
 movieRouter.post("/add", watchlistController.addUserFilmToWatch);
 movieRouter.delete("/remove", watchlistController.removeUserFilmToWatch);
 movieRouter.get("/", watchlistController.getUserFilmsToWatch);
+movieRouter.get("/csv", watchlistController.getCSVUserFilmsToWatch);
 movieRouter.get("/watched", watchlistController.getUserWatchedFilms);
 
 export default movieRouter;

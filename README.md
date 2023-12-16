@@ -26,8 +26,11 @@ To install the project, follow these steps:
 
 ## Use in collation with Unity Game
 
-1. To run Unity Game, open the MOVIE_BUILD executable inside the game folder
-2. Tip, to get the app started from the character moving around bit, press "/" (slash)
+1. To run Unity Game, open the MOVIE_BUILD.app executable inside the game folder (in vscode it may show as folder with contents)
+2. We discluded the Source of the game because its around 500MB so it might take a while to download
+    - if you would like to view the source of the game, here's the repo link
+    - https://github.com/QuillanGee/Movie_Recap_Final_Submission/
+3. Tip, to get the app started from the character moving around bit, press "/" (slash)
 
 ## Navigate the project structure with the following guidelines.
 

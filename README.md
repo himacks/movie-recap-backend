@@ -4,6 +4,7 @@ Before you begin, ensure you have met the following requirements:
 
 -   You have a `Node.js` environment installed on your computer.
     -   if you have homebrew on your mac you can type `brew install node`
+    -   if you have windows go here -> https://nodejs.org/en/download/
 
 ## Installation
 
@@ -12,113 +13,50 @@ To install the project, follow these steps:
 1. Clone the repository:
 2. Navigate to the project directory
 3. Install requirements by typing in `npm install`
-4. View commands to run by typing in `npm run`
-5. Usually you'd run `npm run dev`
+4. Ensure you have configured the src/config/db.ts with proper routing to
+   your MySQL server.
+5. View commands to run by typing in `npm run`
+6. Usually you'd run `npm run dev`
 
-## API Documentation for Movie Application
+## Use in collation with Unity Game
 
-Base URL: http://localhost:3000/api/v1/
+## Navigate the project structure with the following guidelines.
 
-## Endpoints
+-   controller folder
+    -   responsible for handling specific endpoints and mapping them to db functions and returning data to a caller.
+-   db folder
+    -   responsible for handling direct communication to MySQL database
+-   middlewares folder
+    -   verifies RESTful data is of appropriate format
+-   routes folder
+    -   handles mapping specific api endpoints to appropriate controller functions.
 
-## Movies
+## To make your grading life easier here's what you can search for in the repository to get to each project requirement
 
-### Search Movies
+1. Print/display records from your database/tables.
 
-GET /movies/search
-Query Parameters:
-name (optional): Search movies by name.
-id (optional): Get a movie by its ID.
-Returns a list of movies or a specific movie based on the query parameters.
+-   Check Unity Game, or see
 
-### Search Movies by Genre and Score
+2. Query for data/results with various parameters/filters
 
-GET /movies/genre
-Query Parameters:
-genre1, genre2, genre3 (optional): Search movies by up to three genres.
-limit (optional): Limit the number of results returned.
-Returns a list of movies filtered by specified genres and score limits.
+3. Create a new record
 
-### Get Movie Details
+4. Delete records (soft delete function would be ideal)
 
-GET /movies/details
-Query Parameters:
-id: The ID of the movie for which details are requested.
-Returns detailed information of a movie, including actors, directors, and reviews.
+5. Update records
 
-## Reviews
+6. Make use of transactions (commit & rollback)
 
-### Add New Review
+7. Generate reports that can be exported (excel or csv format)
 
-POST /reviews/add
-Body: JSON object containing review details (film_id, user_id, score, etc.).
-Adds a new review to the database.
+8. One query must perform an aggregation/group-by clause
 
-### Get Reviews
+9. One query must contain a subquery.
 
-GET /reviews
-Query Parameters:
-film_id (optional): Fetch reviews for a specific film.
-user_id (optional): Fetch reviews by a specific user.
-Returns a list of reviews based on the query parameters.
+10. Two queries must involve joins across at least 3 tables
 
-## Users
+11. Enforce referential integrality (PK/FK Constraints)
 
-### User Signup
+12. Include Database Views, Indexes
 
-POST /users/signup
-
-Body: JSON object containing user details (username, password, etc.).
-Registers a new user in the database.
-
-### User Login
-
-POST /users/login
-
-Body: JSON object containing user credentials (username, password).
-Authenticates a user and returns user details.
-
-## Watchlist
-
-### Add Film to Watchlist
-
-POST /watchlist/add
-
-Body: JSON object containing user and film IDs (userId, filmId).
-Adds a film to the user's watchlist.
-
-### Remove Film from Watchlist
-
-DELETE /watchlist/remove
-
-Body: JSON object containing user and film IDs (userId, filmId).
-Removes a film from the user's watchlist.
-
-### Get User's Films to Watch
-
-GET /watchlist
-
-Query Parameter:
-userId: The ID of the user.
-Returns a list of films in the user's watchlist.
-
-### Get User's Watched Films
-
-GET /watchlist/watched
-Query Parameter:
-userId: The ID of the user.
-Returns a list of films that the user has watched.
-
-## Using Postman for Testing
-
-Set the base URL in Postman to http://localhost:3000/api/v1/.
-Choose the appropriate HTTP method (GET, POST, DELETE) for the endpoint you are testing.
-For endpoints requiring query parameters, add them in the URL or in the 'Params' section in Postman.
-For endpoints requiring a request body, select 'Body', choose 'raw', and set the type to 'JSON (application/json)'. Enter the JSON data as per the endpoint's requirements.
-Send the request and observe the response.
-
-## Notes
-
-Replace localhost:3000 with your server's address and port if different.
-Ensure your local server is running before testing with Postman.
-For endpoints with optional parameters, omitting them will generally return broader results or default behavior.
+13. Use at least 5 entities

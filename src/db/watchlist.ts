@@ -2,6 +2,7 @@ import {PoolConnection, QueryError} from "mysql2";
 import {connection} from "../config/db";
 import {Movie} from "../models/movie";
 
+// db function to add a film to a user's watchlist
 const addUserFilmToWatch = (userId: number, filmId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -17,6 +18,7 @@ const addUserFilmToWatch = (userId: number, filmId: number): Promise<void> => {
     });
 };
 
+// db function to remove a film from a user's watchlist
 const removeUserFilmToWatch = (userId: number, filmId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -32,6 +34,7 @@ const removeUserFilmToWatch = (userId: number, filmId: number): Promise<void> =>
     });
 };
 
+// db function to get all films from a user's watchlist
 const getUserFilmsToWatch = (userId: number): Promise<Movie[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -52,6 +55,9 @@ const getUserFilmsToWatch = (userId: number): Promise<Movie[]> => {
     });
 };
 
+// db function to get all films that a user has watched
+// current;y tracks watched movies as movies the user has reviewed
+// motivates users to review their films
 const getUserWatchedFilms = (userId: number): Promise<Movie[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {

@@ -1,3 +1,6 @@
+// object type for review, includes optional parameter of movie so we can
+// aggregate the movie data with the review if needed
+
 import {Movie} from "./movie";
 
 export interface Review {

@@ -1,3 +1,5 @@
+// object type for movie
+
 export interface Movie {
     id: number;
     original_language?: string;

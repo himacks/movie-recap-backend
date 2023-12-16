@@ -3,6 +3,10 @@ import {Review} from "../models/review";
 import {connection} from "../config/db";
 import {Movie} from "../models/movie";
 
+// db function to add a review, because review properties are very dynamic
+// we took a creative approach, by default values for genre scores are null
+// this way we can just insert partial review data to fill in whatever is not
+// null in the DB
 const addReview = (newReview: Partial<Omit<Review, "id">>): Promise<void> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -10,10 +14,13 @@ const addReview = (newReview: Partial<Omit<Review, "id">>): Promise<void> => {
                 return reject(err);
             }
 
+            // keys through newReview property keys, to insert the
+            // number of placeholders that match the number of keys to query
             const query = `INSERT INTO reviews (${Object.keys(newReview).join(
                 ", "
             )}) VALUES (${"?, ".repeat(Object.keys(newReview).length).slice(0, -2)})`;
 
+            //insert newReview properties to query
             conn.query(query, Object.values(newReview), (err, result) => {
                 conn.release();
                 if (err) {
@@ -25,6 +32,7 @@ const addReview = (newReview: Partial<Omit<Review, "id">>): Promise<void> => {
     });
 };
 
+// db function to delete a review given an ID
 const deleteReviewById = (reviewId: number): Promise<void> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -44,6 +52,7 @@ const deleteReviewById = (reviewId: number): Promise<void> => {
     });
 };
 
+// db function to get all reviews associated to am movie given a movie id
 const getReviewsByMovieId = (filmId: number): Promise<Review[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -63,6 +72,7 @@ const getReviewsByMovieId = (filmId: number): Promise<Review[]> => {
     });
 };
 
+// db function to get all reviews associated to a user given a user id
 const getReviewsByUserId = (userId: number): Promise<Review[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -78,9 +88,10 @@ const getReviewsByUserId = (userId: number): Promise<Review[]> => {
                     return reject(err);
                 }
 
-                // Map over the results and restructure each item
+                // map over the results and restructure each item
+                // attempted to use join query to reduce DB calls, but now
+                // we must reformat data to be more clean and usable
                 const reviewsWithMovies = (results as (Movie & Review)[]).map((result) => {
-                    // Separate movie fields from review fields
                     const {
                         original_language,
                         overview,
@@ -92,7 +103,6 @@ const getReviewsByUserId = (userId: number): Promise<Review[]> => {
                         ...reviewFields
                     } = result;
 
-                    // Create a movie object with the movie fields
                     const movie = {
                         original_language,
                         overview,
@@ -103,7 +113,6 @@ const getReviewsByUserId = (userId: number): Promise<Review[]> => {
                         title
                     };
 
-                    // Return the new structure
                     return {
                         ...reviewFields,
                         movie

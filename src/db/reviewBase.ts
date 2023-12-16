@@ -2,6 +2,10 @@ import {PoolConnection, QueryError} from "mysql2";
 import {connection} from "../config/db";
 import {FilmScore} from "../models/filmScore";
 
+// db function to get top (limit) film scores given up to 3 genres
+// uses a sub query to get each movie along with a new property that
+// sums genres scores and applies a weight
+// sorts results and returns the top (limit)
 const getFilmScoresByGenres = (
     genre1: string,
     genre2: string,

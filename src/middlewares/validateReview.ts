@@ -1,4 +1,7 @@
 import {Request, Response, NextFunction} from "express";
+
+// middleware to validate incoming post body data, stringified data should
+// be attempted to be converted to proper types
 export default function validateReview(req: Request, res: Response, next: NextFunction) {
     const review = req.body;
 

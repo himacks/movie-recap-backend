@@ -1,3 +1,5 @@
+//helper function to convert a an object to csv format
+
 function convertToCSV(objectArray: any[]) {
     const array = [Object.keys(objectArray[0])].concat(objectArray);
 

@@ -1,5 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 
+// middleware to attempt to validate user data, whenever a new user is signed
+// up or updated, ensure the right data is sent.
 export default function validateUser(req: Request, res: Response, next: NextFunction) {
     const user = req.body;
 

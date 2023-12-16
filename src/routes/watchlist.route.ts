@@ -1,12 +1,14 @@
 import {Router} from "express";
 import watchlistController from "../controller/watchlist.controller";
 
-const movieRouter = Router();
+const watchlistRouter = Router();
 
-movieRouter.post("/add", watchlistController.addUserFilmToWatch);
-movieRouter.delete("/remove", watchlistController.removeUserFilmToWatch);
-movieRouter.get("/", watchlistController.getUserFilmsToWatch);
-movieRouter.get("/csv", watchlistController.getCSVUserFilmsToWatch);
-movieRouter.get("/watched", watchlistController.getUserWatchedFilms);
+//all routes associated to watchlist controller going to appropriate functions
 
-export default movieRouter;
+watchlistRouter.post("/add", watchlistController.addUserFilmToWatch);
+watchlistRouter.delete("/remove", watchlistController.removeUserFilmToWatch);
+watchlistRouter.get("/", watchlistController.getUserFilmsToWatch);
+watchlistRouter.get("/csv", watchlistController.getCSVUserFilmsToWatch);
+watchlistRouter.get("/watched", watchlistController.getUserWatchedFilms);
+
+export default watchlistRouter;

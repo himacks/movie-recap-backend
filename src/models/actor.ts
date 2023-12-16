@@ -1,3 +1,4 @@
+// object type for actor
 export interface Actor {
     id: number;
     actor_name: string;

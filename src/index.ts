@@ -1,20 +1,23 @@
-// import needed libraries
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import routes from "./routes";
 
-// get express application
+// express application
 const app = express();
+
 // body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-// define app port
+
+// localhost app runs on port 3000
 const port = process.env.PORT || 3000;
-// starts the server
+
+// start server
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}`);
 });
 
+// route handler for api requests
 app.use("/api", routes);
 
 export default app;

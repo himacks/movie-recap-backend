@@ -4,6 +4,7 @@ import {connection} from "../config/db";
 import {Actor} from "../models/actor";
 import {Director} from "../models/director";
 
+// db function to get movie by movie id
 const getMovieById = (movieId: number): Promise<Movie | null> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -18,7 +19,7 @@ const getMovieById = (movieId: number): Promise<Movie | null> => {
         });
     });
 };
-
+// db function to get all movies matching a name
 const getMoviesByName = (name: string): Promise<Movie[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {
@@ -34,6 +35,8 @@ const getMoviesByName = (name: string): Promise<Movie[]> => {
     });
 };
 
+// db function to get all movies that are inside a list of film ids,
+// useful for batch fetching
 const getMoviesByFilmIds = (filmIds: number[]): Promise<Movie[]> => {
     return new Promise((resolve, reject) => {
         if (filmIds.length === 0) {
@@ -55,6 +58,7 @@ const getMoviesByFilmIds = (filmIds: number[]): Promise<Movie[]> => {
     });
 };
 
+// db function to get all actors from a movie given movie id
 const getActorsByMovieId = (movieId: number): Promise<Actor[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err, conn) => {
@@ -75,6 +79,8 @@ const getActorsByMovieId = (movieId: number): Promise<Actor[]> => {
     });
 };
 
+// db function to get all directors from a movie given movie id, joins on
+// director table
 const getDirectorsByMovieId = (movieId: number): Promise<Director[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err, conn) => {
@@ -95,6 +101,8 @@ const getDirectorsByMovieId = (movieId: number): Promise<Director[]> => {
     });
 };
 
+// db function to call a DB view to get list of most reviewed movies from
+// MovieRecap
 const getTrendingMovies = (): Promise<Movie[]> => {
     return new Promise((resolve, reject) => {
         connection.getConnection((err: QueryError, conn: PoolConnection) => {

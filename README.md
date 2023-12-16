@@ -16,10 +16,18 @@ To install the project, follow these steps:
 4. Ensure you have configured the src/config/db.ts with proper routing to
    your MySQL server.
 5. Ensure MySQL server is setup and filled with dump data (see sql folder for dump files)
+    - Create a new Database in MySQL called MovieRecap
+    - Then drag and drop movie-recap-dump-POPULATED.sql into MySQL and run the script
+    - movie-recap-dump-NOT-POPULATED.sql is there for easier grading, lighter file size, won't lag computer because there are over 200,000 entries in the POPULATED sql
+    - Database should be populated and ready to go.
 6. View commands to run by typing in `npm run`
-7. To run the server in development mode, type `npm run dev`
+7. On the first start type in `npm run build` to build the server
+8. To run the server in development mode, type `npm run dev`
 
 ## Use in collation with Unity Game
+
+1. To run Unity Game, open the MOVIE_BUILD executable inside the game folder
+2. Tip, to get the app started from the character moving around bit, press "/" (slash)
 
 ## Navigate the project structure with the following guidelines.
 

@@ -17,7 +17,7 @@ To install the project, follow these steps:
    your MySQL server.
 5. Ensure MySQL server is setup and filled with dump data (see sql folder for dump files)
 6. View commands to run by typing in `npm run`
-7. Usually you'd run `npm run dev`
+7. To run the server in development mode, type `npm run dev`
 
 ## Use in collation with Unity Game
 

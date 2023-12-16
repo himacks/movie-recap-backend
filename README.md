@@ -15,8 +15,9 @@ To install the project, follow these steps:
 3. Install requirements by typing in `npm install`
 4. Ensure you have configured the src/config/db.ts with proper routing to
    your MySQL server.
-5. View commands to run by typing in `npm run`
-6. Usually you'd run `npm run dev`
+5. Ensure MySQL server is setup and filled with dump data (see sql folder for dump files)
+6. View commands to run by typing in `npm run`
+7. Usually you'd run `npm run dev`
 
 ## Use in collation with Unity Game
 
@@ -30,33 +31,3 @@ To install the project, follow these steps:
     -   verifies RESTful data is of appropriate format
 -   routes folder
     -   handles mapping specific api endpoints to appropriate controller functions.
-
-## To make your grading life easier here's what you can search for in the repository to get to each project requirement
-
-1. Print/display records from your database/tables.
-
--   Check Unity Game, or see
-
-2. Query for data/results with various parameters/filters
-
-3. Create a new record
-
-4. Delete records (soft delete function would be ideal)
-
-5. Update records
-
-6. Make use of transactions (commit & rollback)
-
-7. Generate reports that can be exported (excel or csv format)
-
-8. One query must perform an aggregation/group-by clause
-
-9. One query must contain a subquery.
-
-10. Two queries must involve joins across at least 3 tables
-
-11. Enforce referential integrality (PK/FK Constraints)
-
-12. Include Database Views, Indexes
-
-13. Use at least 5 entities

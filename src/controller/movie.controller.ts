@@ -65,6 +65,7 @@ const searchMoviesByGenreScore = async (req: Request, res: Response) => {
         // converts ids to movies
         const filmIds = filmScores.map((filmScore: FilmScore) => filmScore.film_id);
 
+        // call db to get associated movies
         const movies = await movie.getMoviesByFilmIds(filmIds);
 
         res.status(200).send({message: "Movies fetched successfully", result: movies});

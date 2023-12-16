@@ -34,6 +34,12 @@ To install the project, follow these steps:
 
 ## Navigate the project structure with the following guidelines.
 
+-   sql folder
+    -   contains sql dump files
+        -   contains populated and non populated
+        -   non populated easier to read and grade
+        -   populated used to import into mysql for functional app
+-   game folder - includes a compiled MOVIE BUILD.app to run the game
 -   controller folder
     -   responsible for handling specific endpoints and mapping them to db functions and returning data to a caller.
 -   db folder
